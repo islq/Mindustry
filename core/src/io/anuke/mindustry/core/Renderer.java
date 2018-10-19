@@ -145,7 +145,7 @@ public class Renderer extends RendererModule{
 
             if(players[0].isDead()){
                 TileEntity core = players[0].getClosestCore();
-                if(core != null){
+                if(core != null && players[0].spawner == -1){
                     smoothCamera(core.x, core.y, 0.08f);
                 }else{
                     smoothCamera(position.x + 0.0001f, position.y + 0.0001f, 0.08f);
@@ -247,14 +247,14 @@ public class Renderer extends RendererModule{
 
         overlays.drawBottom();
         drawAndInterpolate(playerGroup, p -> true, Player::drawBuildRequests);
-        overlays.drawTop();
 
         Shaders.shield.color.set(Palette.accent);
-
         Graphics.beginShaders(Shaders.shield);
         EntityDraw.draw(shieldGroup);
         EntityDraw.drawWith(shieldGroup, shield -> true, shield -> ((ShieldEntity)shield).drawOver());
         Graphics.endShaders();
+
+        overlays.drawTop();
 
         if(showFog){
             Graphics.surface();
